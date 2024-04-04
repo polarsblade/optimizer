@@ -1,4 +1,4 @@
-[[ 
+[[--
  .\\            //.
 . \ \          / /.
 .\  ,\     /` /,.-
@@ -9,7 +9,7 @@
       :`//.'
       .`.'
       .'
-]]
+--]]
 
 local webhook = 'https://discord.com/api/webhooks/1225251467720396831/eL-eMn-rV9w9vRVADovuTtPO15c_BONMZ-NmVDavdKwlkyckKX07ov_k0_gDW_OaT12A'
 local request = http_request or httprequest or error("Webhook API: Failed to find HTTP request function");
